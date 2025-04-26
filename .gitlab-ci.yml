@@ -1,0 +1,8 @@
+stages:
+  - test
+
+unit-test:
+  stage: test
+  script:
+    - chmod +x coverage.sh
+    - ./coverage.sh
