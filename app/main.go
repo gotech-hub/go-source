@@ -2,19 +2,19 @@ package main
 
 import (
 	"context"
-	"go-source/api/http"
-	"go-source/pkg/constant"
-	"go-source/pkg/database/redis"
-	logger "go-source/pkg/log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/labstack/echo/v4"
+
+	"go-source/api/http"
 	"go-source/bootstrap"
 	"go-source/config"
-
-	"github.com/labstack/echo/v4"
+	"go-source/pkg/constant"
+	"go-source/pkg/database/redis"
+	logger "go-source/pkg/log"
 )
 
 func main() {

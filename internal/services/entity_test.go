@@ -3,14 +3,15 @@ package services
 import (
 	"context"
 	"fmt"
-	"go-source/internal/domains"
-	entity "go-source/repositories/entity1"
-	mocks "go-source/test/mocks/entity"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.uber.org/mock/gomock"
+
+	"go-source/internal/domains"
+	entity "go-source/repositories/entity1"
+	mocks "go-source/test/mocks/entity"
 )
 
 func TestEntityService_Get(t *testing.T) {
