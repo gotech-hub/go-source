@@ -18,56 +18,48 @@ import (
 )
 
 func main() {
-	// Load configuration
+	// Load application configuration from environment variables
 	config, err := config.LoadConfig()
 	if err != nil {
 		logger.GetLogger().Fatal().Msgf("Failed to load configuration: %v", err)
 		return
 	}
 
-	// Initialize logger
+	// Initialize logging system with service name
 	logger.InitLog(config.ServiceName)
 	log := logger.GetLogger()
 	log.Info().Msgf("Start %s services", constant.ServiceName)
 
+	// Set health check status to true for service discovery
 	http.SetHealthCheck(true)
 	e := echo.New()
 
+	// Setup context with graceful shutdown signals
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Kill, os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 
-	// Initialize rs
+	// Initialize Redis connection
 	redisClient, err := redis.ConnectRedis(ctx, &config.RedisConfig)
 	if err != nil {
-		log.Fatal().Msgf("Connect rs fail! %s", err)
+		log.Fatal().Msgf("Connect redis failed: %s", err)
 	}
 
-	// Initialize database connections
+	// Initialize application dependencies following clean architecture pattern
 	storage := bootstrap.NewDatabaseConnection(ctx)
-
-	// Initialize clients
 	clients := bootstrap.NewClients()
-
-	// Initialize repositories
-	repo := bootstrap.NewRepositories(storage.Connection)
-
-	// Initialize services
-	services := bootstrap.NewServices(repo, redisClient, clients)
-
-	// Initialize handlers
+	repositores := bootstrap.NewRepositories(storage.Connection)
+	services := bootstrap.NewServices(repositores, redisClient, clients)
 	handlers := bootstrap.NewHandlers(services)
 
-	// Start message broker
-	// msgBroker := msg.NewMsgBroker(conf, services.TierService)
-	// msgBroker.Start(ctx)
-
-	// Start HTTP server
+	// Start HTTP server with configured handlers
 	srv := http.NewHttpServe(handlers)
 	srv.Start(e)
 
-	// Handle graceful shutdown.
+	// Wait for termination signal for graceful shutdown
 	<-ctx.Done()
 	http.SetHealthCheck(false)
+
+	// Allow 15 seconds for active connections to close
 	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer shutdownCancel()
 	if err := e.Shutdown(shutdownCtx); err != nil {
