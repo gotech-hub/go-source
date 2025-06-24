@@ -3,11 +3,12 @@ package mocks
 import (
 	"context"
 	"fmt"
+	entity "go-source/repositories/entity1"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
-	"go-source/repositories/entity"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.uber.org/mock/gomock"
-	"testing"
 )
 
 func TestEntityRepository(t *testing.T) {

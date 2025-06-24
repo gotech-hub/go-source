@@ -3,6 +3,7 @@ package http
 import (
 	"errors"
 	"fmt"
+	"go-source/bootstrap"
 	"go-source/config"
 	logger "go-source/pkg/log"
 	"net/http"
@@ -29,7 +30,7 @@ type ServInterface interface {
 type Server struct {
 }
 
-func NewHttpServe() *Server {
+func NewHttpServe(handlers *bootstrap.Handlers) *Server {
 	return &Server{}
 }
 

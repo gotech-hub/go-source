@@ -11,7 +11,7 @@ package mocks
 
 import (
 	context "context"
-	entity "go-source/repositories/entity"
+	entity "go-source/repositories/entity1"
 	reflect "reflect"
 
 	primitive "go.mongodb.org/mongo-driver/bson/primitive"

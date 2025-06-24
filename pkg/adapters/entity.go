@@ -2,7 +2,7 @@ package adapters
 
 import (
 	"go-source/internal/domains"
-	"go-source/repositories/entity"
+	entity "go-source/repositories/entity1"
 )
 
 type AdapterEntity struct {

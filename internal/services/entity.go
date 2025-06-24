@@ -4,9 +4,10 @@ import (
 	"context"
 	"go-source/internal/domains"
 	"go-source/pkg/adapters"
-	"go-source/repositories/entity"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	entity "go-source/repositories/entity1"
 	"sync"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type EntityService struct {
